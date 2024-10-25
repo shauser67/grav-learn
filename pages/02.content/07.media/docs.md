@@ -814,6 +814,31 @@ Fixes the orientation of the image when rotation is made via EXIF data (applies 
 [/ui-tab]
 [/ui-tabs]
 
+#### watermark
+
+The **watermark action** merges two images, a watermark image and a source image, into a final watermarked image. This is a very specific action that needs a more detailed description than other actions or filters. In particular, the specific behavior when [combining filters](#combinations) must be taken into account. For those interested, there is a very detailed [blog post about the watermark action](https://www.grav.cz/blog/vodoznak-aneb-nepokrades-kelisova), written by [Vít Petira](https://github.com/petira), but only in Czech. However, the instructions are easy to understand.
+
+! If you are using a page-level [stream](/content/image-linking#php-streams), then page prefixes must also be specified.
+
+[ui-tabs]
+[ui-tab title="Markdown"]
+```markdown
+![Sample Image](sample-image.jpg?watermark=user://pages/02.content/07.media/sample-watermark.png,top-left,50)
+```
+[/ui-tab]
+[ui-tab title="Twig"]
+{% verbatim %}
+```twig
+{{ page.media['sample-image.jpg'].watermark('user://pages/02.content/07.media/sample-watermark.png','top-left',50).html()|raw }}
+```
+{% endverbatim %}
+[/ui-tab]
+[/ui-tabs]
+
+##### Result:
+
+![Sample Image](sample-image.jpg?watermark=user://pages/02.content/07.media/sample-watermark.png,top-left,50)
+
 #### loading
 
 The loading attributing on images gives authors control over when the browser should start loading the resource. The value for the loading attribute can be one of `auto` (default), `lazy`, `eager`.
@@ -844,52 +869,11 @@ When value `auto` is chosen, no `loading` attribute is added and browser will de
 [/ui-tab]
 [/ui-tabs]
 
-
-#### watermark
-
-The **watermark action** merges two images, a watermark image and a source image, into a final watermarked image. This is a very specific action that needs a more detailed description than other actions or filters. In particular, the specific behavior when [combining filters](#combinations) must be taken into account. For those interested, there is a very detailed [blog post about the watermark action](https://www.grav.cz/blog/vodoznak-aneb-nepokrades-kelisova), written by [Vít Petira](https://github.com/petira), but only in Czech. However, the instructions are easy to understand.
-
-! If you are using a page-level [stream](/content/image-linking#php-streams), then page prefixes must also be specified.
-
-[ui-tabs]
-[ui-tab title="Markdown"]
-```markdown
-![Sample Image](sample-image.jpg?watermark=user://pages/02.content/07.media/sample-watermark.png,top-left,50)
-```
-[/ui-tab]
-[ui-tab title="Twig"]
-{% verbatim %}
-```twig
-{{ page.media['sample-image.jpg'].watermark('user://pages/02.content/07.media/sample-watermark.png','top-left',50).html()|raw }}
-```
-{% endverbatim %}
-[/ui-tab]
-[/ui-tabs]
-
-##### Result:
-
-![Sample Image](sample-image.jpg?watermark=user://pages/02.content/07.media/sample-watermark.png,top-left,50)
-
-
 #### decoding
 
 The decoding attributing on images gives authors control over when the browser should start decoding the resource. The value for the decoding attribute can be one of `auto` (default), `sync`, `async`.
 Value can be set in `system.images.defaults.decoding` as default value, or per md image with `?decoding=async`
 When value `auto` is chosen, no `decoding` attribute is added and browser will determine which strategy to use.
-
-######  Using default value as defined in `config.system.images.defaults.decoding`
-{% verbatim %}
-```twig
-{{ page.media['sample-image.jpg'].decoding.html('Sample Image')|raw }}
-```
-{% endverbatim %}
-
-###### Using explicit value
-{% verbatim %}
-```twig
-{{ page.media['sample-image.jpg'].decoding('async').html('Sample Image')|raw }}
-```
-{% endverbatim %}
 
 [ui-tabs]
 [ui-tab title="Markdown"]
@@ -897,9 +881,78 @@ When value `auto` is chosen, no `decoding` attribute is added and browser will d
 ![Sample Image](sample-image.jpg?decoding=async)
 ```
 [/ui-tab]
+[ui-tab title="Twig"]
+{% verbatim %}
+```twig
+{# Using default value as defined in `config.system.images.defaults.decoding` #}
+{{ page.media['sample-image.jpg'].decoding.html('Sample Image')|raw }}
+
+{# Using explicit value #}
+{{ page.media['sample-image.jpg'].decoding('async').html('Sample Image')|raw }}
+```
+{% endverbatim %}
+[/ui-tab]
 [ui-tab title="HTML Code"]
 ```html
 <img decoding="async" title="Sample Image"  src="/images/e/f/1/0/5/ef10554cd3a99f2e65136e79dce170d4f8a7a1b9-sample-image.jpg" />
+```
+[/ui-tab]
+[/ui-tabs]#### decoding
+
+The decoding attributing on images gives authors control over when the browser should start decoding the resource. The value for the decoding attribute can be one of `auto` (default), `sync`, `async`.
+Value can be set in `system.images.defaults.decoding` as default value, or per md image with `?decoding=async`
+When value `auto` is chosen, no `decoding` attribute is added and browser will determine which strategy to use.
+
+[ui-tabs]
+[ui-tab title="Markdown"]
+```markdown
+![Sample Image](sample-image.jpg?decoding=async)
+```
+[/ui-tab]
+[ui-tab title="Twig"]
+{% verbatim %}
+```twig
+{# Using default value as defined in `config.system.images.defaults.decoding` #}
+{{ page.media['sample-image.jpg'].decoding.html('Sample Image')|raw }}
+
+{# Using explicit value #}
+{{ page.media['sample-image.jpg'].decoding('async').html('Sample Image')|raw }}
+```
+{% endverbatim %}
+[/ui-tab]
+[ui-tab title="HTML Code"]
+```html
+<img decoding="async" title="Sample Image"  src="/images/e/f/1/0/5/ef10554cd3a99f2e65136e79dce170d4f8a7a1b9-sample-image.jpg" />
+```
+[/ui-tab]
+[/ui-tabs]
+
+#### fetchpriority
+
+The fetchpriority attributing gives authors control over when the browser should prioritize the fetch of the image relative to other images. The value for the fetchpriority attribute can be one of `auto` (default), `high`, `low`.
+Value can be set in `system.images.defaults.fetchpriority` as default value, or per md image with `?fetchpriority=high`
+When value `auto` is chosen, no `fetchpriority` attribute is added and browser will determine which strategy to use.
+
+[ui-tabs]
+[ui-tab title="Markdown"]
+```markdown
+![Sample Image](sample-image.jpg?fetchpriority=high)
+```
+[/ui-tab]
+[ui-tab title="Twig"]
+{% verbatim %}
+```twig
+{# Using default value as defined in `config.system.images.defaults.fetchpriority` #}
+{{ page.media['sample-image.jpg'].fetchpriority.html('Sample Image')|raw }}
+
+{# Using explicit value #}
+{{ page.media['sample-image.jpg'].fetchpriority('high').html('Sample Image')|raw }}
+```
+{% endverbatim %}
+[/ui-tab]
+[ui-tab title="HTML Code"]
+```html
+<img fetchpriority="high" title="Sample Image"  src="/images/e/f/1/0/5/ef10554cd3a99f2e65136e79dce170d4f8a7a1b9-sample-image.jpg" />
 ```
 [/ui-tab]
 [/ui-tabs]
@@ -1343,5 +1396,3 @@ The options are as follows:
 | loop        | Enables (`1`) or Disables (`0`) automatic looping for the video, replaying it as it ends. |
 | muted       | Mute video and generally allow it to autoplay.                                            |
 [/div]
-
-
