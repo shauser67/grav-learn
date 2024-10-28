@@ -375,6 +375,26 @@ class RandomizerPlugin extends Plugin
 
 If you followed along, you should have a fully functional **Randomizer** plugin enabled for your site.  Just point your browser to the `http://yoursite.com/random`, and you should see a random page.  You can also download the original **Random**  plugin directly from the [Plugins Download](https://getgrav.org/downloads/plugins) section of the [getgrav.org](https://getgrav.org/downloads/plugins) site.
 
+## Extending blueprints
+
+If your plugin needs to extend blueprints, e.g. default.yaml from /system/blueprints/pages/default.yaml there's no need to register your blueprint via hooks if you respect the folder structure placing your extending blueprint inside of [your-plugin-directory]/blueprints/pages/default.yaml. Grav will merge your extended blueprint definitions while themes can do the same lateron.
+
+> system inheritance if you create this folder structure inside your plugin
+> > - blueprints
+> > - - pages
+> > - - - default.yaml
+
+> admin inheritance if you create this folder structure inside your plugin
+> > - blueprints
+> > - - admin
+>>  - - - pages
+> > - - - - raw.yaml
+> 
+> From admin you have to inherit raw or others and theme blueprints extending default won't make it into your configuration.
+
+If it's not pages, do it the same way for other inheritances...
+This way you can keep extending changes at a minimum, that's what extending is all about :-).
+
 ## Merging Plugin and Page Configuration
 
 One popular technique that is used in a variety of plugins is the concept of merging the plugin configuration (either default or overridden user config) with page-level configuration.  This means you can set **site-wide** configuration, and then have a specific configuration for a given page as needed.  This provides a lot of power and flexibility for your plugin.
