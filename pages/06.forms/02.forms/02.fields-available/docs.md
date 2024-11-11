@@ -351,13 +351,18 @@ pages.process:
 [prism classes="language-yaml line-numbers"]
 my_field:
     type: checkboxes
-    label: A couple of checkboxes
+    label: A couple of checkboxes with help for each option and option1 disabled
     default:
         - option1
         - option2
     options:
         option1: Option 1
         option2: Option 2
+    help_options:
+        option1: Help for Option 1
+        option2: Help for Option 2
+    disabled_options:
+        - option1
 [/prism]
 
 
@@ -366,6 +371,8 @@ my_field:
 | :-----    | :-----                                                                                                                                         |
 | `use`     | When set to `keys`, the checkbox will store the value of the element key when the form is submitted. Otherwise, it will use the element value. |
 | `options` | An array of key-value options that will be allowed.                                                                                            |
+| `help_options` | An array of key-value with help for each option defined in `options`.                                                                     |
+| `disabled_options` | A list of options that will be displayed disabled.                                                                                             |
 [/div]
 
 [div class="table"]
