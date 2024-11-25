@@ -322,7 +322,7 @@ $translation = $this->grav['language']->translate(['HEADER.MAIN_TEXT']);
 You can also specify a language:
 
 [prism classes="language-php line-numbers"]
-$translation = $this->grav['language']->translate(['HEADER.MAIN_TEXT'], 'fr');
+$translation = $this->grav['language']->translate(['HEADER.MAIN_TEXT'], ['fr']);
 [/prism]
 
 To translate a specific item in an array use:
